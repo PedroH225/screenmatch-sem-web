@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.screenmatch.model.DadosEpisodio;
 import com.example.screenmatch.model.DadosSerie;
 import com.example.screenmatch.service.ConsumoApi;
 import com.example.screenmatch.service.ConverteDados;
@@ -24,6 +25,12 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		DadosSerie dados = converteDados.obterDados(json, DadosSerie.class);
 		
 		System.out.println(dados);
+		
+		var jsonEp = cons.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=1&episode=2&apikey=6585022c");
+
+		DadosEpisodio dadosEp = converteDados.obterDados(jsonEp, DadosEpisodio.class);
+		
+		System.out.println(dadosEp);
 	}
 
 }
