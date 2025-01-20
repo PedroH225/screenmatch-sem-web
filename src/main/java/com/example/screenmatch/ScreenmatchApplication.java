@@ -16,25 +16,13 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal();
-		
+
 		principal.exibirMenu();
+
 		
-		
-		/*
-		 * List<DadosTemporada> temporadas = new ArrayList<DadosTemporada>();
-		 * 
-		 * for (int i = 1; i <= dados.totalTemporadas(); i++) { var jsonTemp =
-		 * cons.obterDados("https://www.omdbapi.com/?t=the+boys&season=" + i
-		 * +"&apikey=6585022c");
-		 * 
-		 * DadosTemporada dadosTemp = converteDados.obterDados(jsonTemp,
-		 * DadosTemporada.class);
-		 * 
-		 * temporadas.add(dadosTemp); }
-		 * 
-		 * temporadas.forEach(System.out::println);
-		 */
-		
+		  
+		 
+
 	}
 
 }
