@@ -1,10 +1,15 @@
 package com.example.screenmatch.principal;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 
 import com.example.screenmatch.model.DadosEpisodio;
 import com.example.screenmatch.model.DadosSerie;
@@ -56,7 +61,7 @@ public class Principal {
 
 		temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
-		System.out.println(); 
+		System.out.println();
 		System.out.println("Top 5 episódios:");
 
 		List<DadosEpisodio> dadosEpisodios = temporadas.stream().flatMap(t -> t.episodios().stream())
@@ -65,14 +70,27 @@ public class Principal {
 		dadosEpisodios.stream().filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
 				.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed()).limit(5)
 				.forEach(System.out::println);
-		
-		List<Episodio> episodios = temporadas.stream()
-				.flatMap(t -> t.episodios().stream()
-						.map(d -> new Episodio(t.numero(), d)))
-				.collect(Collectors.toList());
-		
-		episodios.forEach(System.out::println);
 
+		List<Episodio> episodios = temporadas.stream()
+				.flatMap(t -> t.episodios().stream().map(d -> new Episodio(t.numero(), d)))
+				.collect(Collectors.toList());
+
+		System.out.println();
+		System.out.println("Você deseja ver os episódios lançados a partir de que ano?");
+		int ano = sc.nextInt();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		episodios.stream()
+		.filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(LocalDate.of(ano, 1, 1)))
+		.forEach(e -> System.out.println(
+				"Temporada: " + e.getTemporada()
+				+ ", Episódio: " + e.getNumeroEpisodio()
+				+ ", Data de lançamento: " + dtf.format(e.getDataLancamento())
+				+ "."
+				));
+		
+		
 	}
 }
 
