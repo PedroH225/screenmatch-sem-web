@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.example.screenmatch.model.DadosEpisodio;
 import com.example.screenmatch.model.DadosSerie;
 import com.example.screenmatch.model.DadosTemporada;
+import com.example.screenmatch.model.Episodio;
 import com.example.screenmatch.service.ConsumoApi;
 import com.example.screenmatch.service.ConverteDados;
 
@@ -55,17 +56,27 @@ public class Principal {
 
 		temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
-		System.out.println();
+		System.out.println(); 
 		System.out.println("Top 5 episódios:");
 
-		List<DadosEpisodio> episodios = temporadas.stream()
-				.flatMap(t -> t.episodios().stream())
+		List<DadosEpisodio> dadosEpisodios = temporadas.stream().flatMap(t -> t.episodios().stream())
 				.collect(Collectors.toList());
 
-
-		episodios.stream()
-		.filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
-		.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed()).limit(5).forEach(System.out::println);
+		dadosEpisodios.stream().filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+				.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed()).limit(5)
+				.forEach(System.out::println);
+		
+		List<Episodio> episodios = temporadas.stream()
+				.flatMap(t -> t.episodios().stream()
+						.map(d -> new Episodio(t.numero(), d)))
+				.collect(Collectors.toList());
+		
+		episodios.forEach(System.out::println);
 
 	}
 }
+
+
+
+
+
