@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,7 @@ public class Principal {
 		System.out.println();
 		System.out.println("Você deseja ver os episódios lançados a partir de que ano?");
 		int ano = sc.nextInt();
+		sc.nextLine();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
@@ -89,12 +91,24 @@ public class Principal {
 				+ ", Data de lançamento: " + dtf.format(e.getDataLancamento())
 				+ "."
 				));
+
+		System.out.println();
+		System.out.println("Digite um trecho do título do episódio: ");
+
+		String trecho = sc.nextLine();
+
+		Optional<Episodio> buscaEpisodio = episodios.stream()
+				.filter(e -> e.getTitulo().toUpperCase().contains(trecho.toUpperCase())).findFirst();
+
+		System.out.println();
 		
-		
+		if (buscaEpisodio.isPresent()) {	
+			System.out.println("Episódio encontrado!");
+			System.out.println(buscaEpisodio.get());
+			
+		} else {
+			System.out.println("Episódio não encontrado.");
+		}
+
 	}
 }
-
-
-
-
-
