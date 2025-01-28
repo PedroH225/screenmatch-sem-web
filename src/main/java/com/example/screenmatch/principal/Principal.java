@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -29,6 +31,8 @@ public class Principal {
 	private final String API_KEY = "&apikey=6585022c";
 
 	public void exibirMenu() {
+		Locale.setDefault(Locale.US);
+
 		System.out.println();
 		System.out.println("Digite o nome da série: ");
 		var nomeDaSerie = sc.nextLine();
@@ -120,7 +124,18 @@ public class Principal {
 						Collectors.averagingDouble(Episodio::getAvaliacao)));
 		
 		System.out.println(avaliacoesPorTemporada);
+		
+		DoubleSummaryStatistics est = episodios.stream()
+				.filter(e -> e.getAvaliacao() > 0.0)
+				.collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
 				
+		System.out.println();
+		System.out.println("Estatísticas da série " + dados.titulo() + ":");
+		System.out.println("Quantidade de episódios: " + est.getCount());
+		System.out.printf("Média: %.2f%n", est.getAverage());
+		System.out.println("Melhor episódio: " + est.getMax());
+		System.out.println("Pior episódio: " + est.getMin());
+
 
 	}
 }
