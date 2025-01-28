@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -109,6 +110,17 @@ public class Principal {
 		} else {
 			System.out.println("Episódio não encontrado.");
 		}
+		
+		System.out.println();
+		System.out.println("Média de avalições por temporada");
+		
+		Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+				.filter(e -> e.getAvaliacao() > 0.0)
+				.collect(Collectors.groupingBy(Episodio::getTemporada,
+						Collectors.averagingDouble(Episodio::getAvaliacao)));
+		
+		System.out.println(avaliacoesPorTemporada);
+				
 
 	}
 }
